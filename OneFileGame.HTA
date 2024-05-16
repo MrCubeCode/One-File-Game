@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ponograms</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+</head>
+<body>
+
+
+    <canvas id="canvasid" width=1000 height=1000 style="border:0px solid magenta"></canvas>
+    <div id="resilt"></div>
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        canvas#canvasid {
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            background: #00000;
+        }
+    </style>
+
+   
+
+
+
+
+    <script>
+        var canvas = document.getElementById("canvasid")
+var ctx = canvas.getContext("2d")
+
+
+var imported = document.createElement('script');
+imported.src = '/path/to/imported/script';
+document.head.appendChild(imported);
+
+//var sprite = new Image()
+//        sprite.src = 'map1';
+var x = 0;
+var y = 0;
+        var speed = 30;
+        var speedwalk = 10;
+        var w = 10000;
+        var axeY = 500;
+        var h = 1000;
+        var text = "";
+        var map = 'map';
+        var active = false;
+        var inventory = false;
+        var ev = '/Hmm...';
+        var whoEv = 0;
+        var hp = 20;
+var tmpac
+        setTimeout(Render, 1000);
+        var attack = 3;
+        var inv = [0, 0, 0];
+        var invName = ["iron", "wood", "coin"];
+        var mw=true;
+        var ms=true;
+       
+        var ScenObject = [];
+ //       text = text + map;
+        function Add(_x, _y, _w, _h, _name, _sprite, _event, _map) {
+
+            ScenObject[ScenObject.length] = {
+                x: _x,
+                w: _w,
+                h: _h,
+                y: _y,
+                name: _name,
+                spriteObj: _sprite,
+                event: _event,
+                map: _map,
+                hp: 3 + attack * 3
+            };
+        }
+        setInterval(reg,5000);
+        function reg() {
+            hp++;
+        }
+        function getObjectId(_name) {
+        var error = true
+        for (let i = 0; i < ScenObject.length; i++) {
+            if (ScenObject[i].name == _name) {
+                return i;
+                error = false;
+            }
+            
+            }
+            if (error == true) {
+                text = "Fall get object a name '" + _name+"'";
+            }
+    //ScenObject[ScenObject.length - 1].spriteObj.src = _sprite;
+        }
+        function Rmap(sprite, x, y, w, h) {
+            square(w, h / 2, x, y + h / 2, 'green');
+
+            square(w, h / 2, x, y, '#8fddff');
+        }
+        function Ritem(sprite, x, y, w, h) {
+            if (sprite == 'vm') {
+                square(w, h, x, y, 'brown');
+                square(w / 3, h + h / 4, x + w, y - h / 4, 'brown');
+                squarebox(w / 3, h + h / 4, x + w, y - h / 4, 'black');
+                square(w / 3, h + h / 4, x - w / 3, y - h / 4, 'brown');
+                squarebox(w / 3, h + h / 4, x - w / 3, y - h / 4, 'black');
+            }
+            if (sprite == 'axe') {
+                square(w, h, x, y, 'rgb(' + (255-attack) + ',' + 255 + ',' + 255 + ')');
+                square(w / 2, h * 2, x + w / 2, y + h, 'brown');
+            }
+            if (sprite == 'vb') {
+                square(w, h, x, y, 'brown');
+                square(w / 3, h / 2, x, y + h / 2, 'black');
+                square(w / 3, h + h / 4, x + w, y - h / 4, 'brown');
+                squarebox(w / 3, h + h / 4, x + w, y - h / 4, 'black');
+                square(w / 3, h + h / 4, x - w / 3, y - h / 4, 'brown');
+                squarebox(w / 3, h + h / 4, x - w / 3, y - h / 4, 'black');
+            }
+            if (sprite == 'back') {
+                square(w, h, x, y, 'brown');
+                ctx.fillStyle = 'black';
+                ctx.font = "72px serif";
+                ctx.fillText("back", x, y+h/2);
+            }
+            if (sprite == 'hum') {
+                
+                square(w, h, x, y, 'white');
+                square(w / 2, h, x + w / 4, y + h, 'red');
+                square(w / 2, h, x + w, y + h, 'red');
+                square(w / 2, h, x - w / 2, y + h, 'red');
+                square(w / 2, h, x + w/2, y + h*2, 'black');
+                square(w / 2, h, x - w / 3, y + h * 2, 'black');
+                square(w, h / 4, x, y, 'black');
+                ctx.fillStyle = 'black';
+                ctx.font = "72px serif";
+                ctx.fillText("(._.)", x, y + h / 2);
+            }
+            if (sprite == 'inv') {
+
+                square(w, h, x, y, 'white');
+               
+                ctx.fillStyle = 'black';
+                ctx.font = "72px serif";
+                for (var i = 0; i < inv.length; i++) {
+                    ctx.fillText(invName[i] + ":" + inv[i], x, y + (72 * i));
+                }
+                ctx.fillText("press q to craft", x + w / 2, y);
+                ctx.fillText(invName[0] + ":" + attack * 2 + " " + invName[1] + ":" + attack * 3, x + w / 2, y + 72);
+                ctx.fillText("HP:" + hp, x + w / 2, y + (72 * 4));
+                ctx.fillText("Attack:" + attack, x + w / 2, y + (72 * 5));
+               
+            }
+            if (sprite == 'bad') {
+
+                square(w, h, x, y, 'red');
+                square(w / 2, h, x + w / 4, y + h, 'black');
+                square(w / 2, h, x + w, y + h, 'black');
+                square(w / 2, h, x - w / 2, y + h, 'black');
+                square(w / 2, h, x + w / 2, y + h * 2, 'black');
+                square(w / 2, h, x - w / 3, y + h * 2, 'black');
+                
+                ctx.fillStyle = 'white';
+                ctx.font = "72px serif";
+                ctx.fillText("(._.)", x, y + h / 2);
+            }
+            //square(w, h, x, y, 'blue');
+        }
+        function square(side1, side2, x, y, color) {
+            //  ctx.fillStyle = color
+            //   ctx.strokeStyle = color;
+
+            //   ctx.strokeRect(x, y, side1, side2);
+            // ctx.fill();
+            //  ctx.stroke();
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, side1, side2);
+        }
+
+function Render() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    Rmap('none', x, y, w, h);
+
+   
+
+   // Ritem('none', x, y, w, h);
+    tmpac = false;
+    for (let i = 1; i < 100; i++) {
+        Rmap('none', x - w * i, y, w, h);
+        Rmap('none', x + w * i, y, w, h);
+        for (let j = 0; j < ScenObject.length; j++) {
+            if (ScenObject[j].map == map) Ritem(ScenObject[j].spriteObj, (ScenObject[j].x + x) - w * i, ScenObject[j].y, ScenObject[j].w, ScenObject[j].h);
+            if ((ScenObject[j].x + x) - w * i < 500 && ((ScenObject[j].x + x) - w * i) + ScenObject[j].w > 500) { ev = ScenObject[j].event; whoEv = j; tmpac = true }
+        
+        }
+        for (let u = 0; u < ScenObject.length; u++) {
+            if (ScenObject[u].map == map) Ritem(ScenObject[u].spriteObj, (ScenObject[u].x + x) + w * i, ScenObject[u].y, ScenObject[u].w, ScenObject[u].h);
+            if (((ScenObject[u].x + x) + w * i) <= 500 && ((ScenObject[u].x + x) + w * i) + ScenObject[u].w >= 500) { ev = ScenObject[u].event; whoEv = u; tmpac = true }            
+           
+            //console.log();
+            //if (((ScenObject[u].x + x) + w * i) <= 500 && ((ScenObject[u].x + x) + w * i) + ScenObject[u].w >= 500) 
+            //square(ScenObject[u].w, ScenObject[u].h, (ScenObject[u].x + x) + w * i, ScenObject[u].y, 'red')
+        }
+    }
+    for (let i = 0; i < ScenObject.length; i++) {
+        if (ScenObject[i].map == map) Ritem(ScenObject[i].spriteObj, ScenObject[i].x + x, ScenObject[i].y, ScenObject[i].w, ScenObject[i].h);
+        if (ScenObject[i].x + x < 500 && ScenObject[i].x + x + ScenObject[i].w > 500 && ScenObject[i].map == map) { ev = ScenObject[i].event; whoEv = i; tmpac = true }
+        
+            if (tmpac != true) {
+                tmpac = false
+            }
+
+        
+        if (tmpac == true) {
+            active = true;
+        }
+        else {
+            active = false;
+        }
+        
+    }
+    OnRender()
+    requestAnimationFrame(Render);
+        }
+        document.addEventListener('keydown', function (event) {
+           // alert(event.key);
+            if (event.key == 'a') {
+                x += speed;
+            }
+            if (event.key == 'd') {
+                x -= speed;
+            }
+            //if (event.key == 'w') {
+            //    for (let j = 0; j < ScenObject.length; j++) {
+            //        if (ScenObject[j].x < ScenObject[whoEv].x) {
+            //            ScenObject[j].x -= speedwalk * 1;
+            //        }
+            //        if (ScenObject[j].x > ScenObject[whoEv].x) {
+            //            ScenObject[j].x += speedwalk * 1;
+            //        }
+            //        ScenObject[j].w += speedwalk;
+            //        ScenObject[j].h += speedwalk;
+            //        ScenObject[j].y -= speedwalk;
+                 
+            //    }
+            //}
+            //if (event.key == 's') {
+            //    var tmmmp = true;
+            //    for (let j = 0; j < ScenObject.length; j++) {
+            //        if (ms == true) {
+            //            if (ScenObject[j].x < ScenObject[whoEv].x) {
+            //                ScenObject[j].x += speedwalk * 1;
+            //            }
+            //            if (ScenObject[j].x > ScenObject[whoEv].x) {
+            //                ScenObject[j].x -= speedwalk * 1;
+            //            }
+            //            ScenObject[j].w -= speedwalk;
+            //            ScenObject[j].h -= speedwalk;
+
+            //            ScenObject[j].y += speedwalk;
+            //        }
+                
+              
+            //        //if (ScenObject[j].h <= 10) {
+            //        //    ScenObject[j].h = 10;
+            //        //    ms == false;
+            //        //}
+            //        if (ScenObject[j].w <= 10) {
+            //            ScenObject[j].w = 10;
+            //            tmmmp == false;
+            //        }
+                    
+            //    }
+            //    ms = tmmmp;
+            //}
+            if (event.key == 'w' && inventory == false) {
+                Tp(ev);
+            }
+            if (event.key == 'e') {
+                inventory = !inventory;
+            }
+            if (event.key == 'q' && inventory == true) {
+                if (inv[0] >= attack * 2 && inv[1] >= attack * 3) {
+                    inv[0] -= attack * 2;
+                    inv[1] -= attack * 3;
+                    attack += 3;
+
+                }
+            }
+        });
+//document.addEventListener('keypress', (event) => {
+//    const keyName = event.key;
+//    if (keyName == 'a') {
+//        x += speed;
+//    }
+//    if (keyName == 'd') {
+//        x -= speed;
+//    }
+
+//    if (keyName == 'e' && active == true) {
+//        Tp(ev)
+//    }
+//    if (keyName == 'o') {
+//        x += speed;
+//        if (active == true) {
+//            alert("active");
+//        }
+//    }
+//    if (keyName == 'p') {
+//        x -= speed;
+//        if (active == true) {
+//            alert("active");
+//        }
+
+//    }
+//});
+        function sleep(milliseconds) {
+            const date = Date.now();
+            let currentDate = null;
+            do {
+                currentDate = Date.now();
+            } while (currentDate - date < milliseconds);
+        }
+        var tpss;
+        var seltpss;
+        var sssr=9999;
+        function Tp(tp) {
+            console.warn(tp);
+           // var damgmt = false;
+            //sprite.src = '' + tp;
+            if (tp[0] == "$") {
+                damgmt = true;
+                var tmpo = '';
+                var troy = {};
+                for (seltpss = 1; seltpss < tp.length; seltpss++) {
+
+
+                    tpss = tp;
+                    tmpo = tmpo + tpss[seltpss];
+
+                    ctx.font = "48px serif";
+                    ctx.fillText(text, 10, 50);
+                    // sleep(10);
+
+
+                }
+                if (axeY == 500) {
+                    ScenObject[getObjectId(tmpo)].hp -= attack;
+                    text = "Lives:" + ScenObject[getObjectId(tmpo)].hp;
+                    axeY += 200;
+                    if (ScenObject[getObjectId(tmpo)].hp <= 0) {
+
+                        var o = getRandomInt(inv.length)
+                        var h = getRandomInt(10)
+                        inv[o] += h;
+                        text = invName[o] + " + " + h;
+                        ScenObject.splice(getObjectId(tmpo), 1);
+                        Add(getRandomInt(w), 100, 50, 75, tmpo, 'bad', tp, "map")
+                        tmpo = '';
+                    }
+                }
+            }
+            else if (tp[0] != "/" ) {
+                map = tp;
+
+            }
+            
+            else {
+                text = "";
+                for (seltpss = 1; seltpss < tp.length; seltpss++) {
+                    
+                  
+                        tpss = tp;
+                    text = text + tpss[seltpss];
+                   
+                    ctx.font = "48px serif";
+                    ctx.fillText(text, 10, 50);
+                    // sleep(10);
+                   
+                   
+                }
+                if (ScenObject[whoEv].name = 'shop' && inv[2] >= attack * 10) {
+                    inv[2] -= attack * 10;
+                    attack += 3;
+                }
+                //}
+
+
+                //  map = tp;
+            }
+          
+
+        }
+        function Adtex() {
+            text = text + tpss[seltpss] + seltpss;
+            //[seltpss]
+            seltpss++;
+        }
+function squarebox(side1, side2, x, y, color) {
+      ctx.fillStyle = color
+       ctx.strokeStyle = color;
+       ctx.strokeRect(x, y, side1, side2);
+     ctx.fill();
+      ctx.stroke();
+        }
+
+
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+       // AI();
+
+        function AI() {
+
+            for (var i = 1; i <= 3; i++) {
+                if (map == "map") {
+                    ScenObject[getObjectId('bad' + i)].w += 10;
+                    ScenObject[getObjectId('bad' + i)].h += 10;
+                    if (ScenObject[getObjectId('bad' + i)].w >= 300) {
+                        hp -= 1;
+                        if (hp <= 0) {
+                            close();
+                        }
+                    }
+                }
+               
+            }
+        }
+    </script>
+    <script>
+        //Add object: Add(_x, _y, _w, _h, '_name', '_sprite', '_event', '_map')
+        
+       
+        Add(getRandomInt(w), 100, 50, 75, 'bad2', 'bad', '$bad2', "map")
+        Add(getRandomInt(w), 100, 50, 75, 'bad1', 'bad', '$bad1', "map")
+        Add(getRandomInt(w), 100, 50, 75, 'bad3', 'bad', '$bad3', "map")
+            Add(0, 300, 100, 300, 'homes', 'vm', 'map2', "map")
+            Add(0, -200, 500, 5000, 'sprite', 'vb', '/none', "map2")
+            Add(-4000, 600, 200, 300, 'sprite', 'back', 'map', "map2")
+        Add(1000, 100, 200, 300, 'shop', 'hum', '/Hey! I update you axe. A (10 * attack) coin', "map2")
+
+        Add(1000, 100, 200, 300, 'sprite', 'hum', '/Hey!', "&bad2")
+       
+     
+        setInterval(AI, 1000);
+        //UI elements and custom object.
+        function OnRender() {
+            ctx.font = "48px serif";
+            ctx.fillText(text, 10, 50);
+            Ritem('axe', 700, axeY, 200, 200);
+            if (axeY != 500) {
+                
+                    axeY -= 5;
+                }
+
+            if (inventory == true) {
+                Ritem('inv', 100, 100, 800, 800);
+            }
+            
+        }
+    </script>
+</body>
+</html>
