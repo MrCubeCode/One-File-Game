@@ -8,6 +8,12 @@
 
 
     <canvas id="canvasid" width=1000 height=1000 style="border:0px solid magenta"></canvas>
+    <button onClick="contrAnd('w')">w</button>
+    <button onClick="contrAnd('q')">q</button>
+    <button onClick="contrAnd('e')">e</button>
+    <button onClick="contrAnd('a')">a</button>
+    <button onClick="contrAnd('d')">d</button>
+    
     <div id="resilt"></div>
     <style>
         body {
@@ -291,6 +297,28 @@ function Render() {
                 }
             }
         });
+        function contrAnd(conbut) {
+             if (conbut == 'w' && inventory == false) {
+                Tp(ev);
+             }
+            if (conbut == 'e') {
+                inventory = !inventory;
+            }
+            if (conbut == 'q' && inventory == true) {
+                if (inv[0] >= attack * 2 && inv[1] >= attack * 3) {
+                    inv[0] -= attack * 2;
+                    inv[1] -= attack * 3;
+                    attack += 3;
+
+                }
+            }
+            if (conbut == 'a') {
+                x += speed;
+            }
+            if (conbut == 'd') {
+                x -= speed;
+            }
+        }
 //document.addEventListener('keypress', (event) => {
 //    const keyName = event.key;
 //    if (keyName == 'a') {
